@@ -1,5 +1,6 @@
 import './styles/index.css';
 import { IComponent, EventBus } from './core';
+import { WeatherManager } from './modules';
 
 /**
  * AppManager - 应用程序管理器，负责初始化和协调所有组件
@@ -76,8 +77,12 @@ class AppManager {
 document.addEventListener('DOMContentLoaded', () => {
     const app = new AppManager();
 
-    // TODO: 在此处注册组件
-    // TODO: Register components here
+    // 注册天气组件
+    // Register weather component
+    app.RegisterComponent(new WeatherManager());
+
+    // TODO: 后续添加更多组件
+    // TODO: Add more components later
     // app.RegisterComponent(new ClockComponent());
     // app.RegisterComponent(new SearchComponent());
     // app.RegisterComponent(new LinksComponent());
