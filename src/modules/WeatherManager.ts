@@ -325,6 +325,8 @@ export class WeatherManager extends BaseComponent {
      * Get user city via IP geolocation
      * 使用 ipapi.co 免费 API
      * Uses ipapi.co free API
+     * 返回格式：城市名, 国家代码（消除同名城市歧义）
+     * Return format: city, country_code (to disambiguate same-named cities)
      */
     private async GetUserCity(): Promise<string> {
         // 优先从 localStorage 读取用户手动设置的城市
@@ -343,16 +345,29 @@ export class WeatherManager extends BaseComponent {
                 throw new Error(`IP API HTTP ${response.status}`);
             }
 
-            const data = await response.json() as { city?: string; region?: string; country_name?: string };
+            const data = await response.json() as {
+                city?: string;
+                region?: string;
+                country?: string;
+                country_name?: string;
+            };
 
-            // 返回城市名，若无则返回地区或国家
-            // Return city name, or region/country as fallback
-            return data.city || data.region || data.country_name || 'Shanghai';
+            // 构建城市查询字符串，加上国家代码消歧义
+            // Build city query string with country code to disambiguate
+            const city = data.city || data.region || 'Shanghai';
+            const country = data.country || '';
+
+            // 返回 "城市, 国家代码" 格式，如 "George Town, MY"
+            // Return "city, country_code" format, e.g. "George Town, MY"
+            if (country) {
+                return `${city}, ${country}`;
+            }
+            return city;
         } catch (error) {
             console.warn('[WeatherManager] IP geolocation failed, using default city:', error);
             // 默认城市
             // Default city
-            return 'Shanghai';
+            return 'Shanghai, CN';
         }
     }
 
