@@ -278,3 +278,117 @@ body {
     max-width: 80px;
   }
 }
+
+/* ============================================
+   时钟组件
+   Clock Widget
+   ============================================ */
+.clock-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xl);
+  animation: fadeIn var(--transition-slow) ease-out forwards;
+}
+
+.clock-widget__time {
+  font-size: var(--font-size-clock);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 20px hsla(0, 0%, 0%, 0.3);
+}
+
+.clock-widget__date {
+  font-size: var(--font-size-lg);
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+/* 时钟组件响应式
+   Clock Widget Responsive */
+@media (max-width: 768px) {
+  .clock-widget {
+    padding: var(--spacing-lg);
+  }
+
+  .clock-widget__time {
+    font-size: clamp(2.5rem, 15vw, 5rem);
+  }
+
+  .clock-widget__date {
+    font-size: var(--font-size-base);
+  }
+}
+
+/* ============================================
+   搜索组件
+   Search Widget
+   ============================================ */
+.search-widget {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+  max-width: 600px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--color-bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-md);
+  transition: border-color var(--transition-base),
+    box-shadow var(--transition-base), transform var(--transition-base);
+  animation: fadeIn var(--transition-base) ease-out forwards;
+}
+
+.search-widget:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+.search-widget--focused {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px hsla(220, 90%, 56%, 0.2), var(--shadow-lg);
+  transform: scale(1.01);
+}
+
+.search-widget__icon {
+  font-size: var(--font-size-xl);
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+}
+
+.search-widget--focused .search-widget__icon {
+  opacity: 1;
+}
+
+.search-widget__input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-primary);
+  outline: none;
+}
+
+.search-widget__input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* 搜索组件响应式
+   Search Widget Responsive */
+@media (max-width: 768px) {
+  .search-widget {
+    max-width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .search-widget__input {
+    font-size: var(--font-size-base);
+  }
+}
