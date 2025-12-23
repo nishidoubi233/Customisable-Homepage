@@ -4,3 +4,4 @@
 export { WeatherManager } from './WeatherManager';
 export { ClockManager } from './ClockManager';
 export { SearchManager } from './SearchManager';
+export { LinksManager } from './LinksManager';

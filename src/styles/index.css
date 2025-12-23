@@ -392,3 +392,78 @@ body {
     font-size: var(--font-size-base);
   }
 }
+
+/* ============================================
+   快捷链接组件
+   Quick Links Widget
+   ============================================ */
+.links-widget {
+  position: fixed;
+  bottom: var(--spacing-xl);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  animation: fadeIn var(--transition-slow) ease-out forwards;
+}
+
+.links-widget__container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-xl);
+  background: var(--color-bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-md);
+}
+
+.links-widget__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--link-color, var(--color-text-primary));
+  text-decoration: none;
+  transition: transform var(--transition-fast),
+    color var(--transition-fast),
+    filter var(--transition-fast);
+}
+
+.links-widget__link:hover {
+  transform: scale(1.2);
+  color: var(--color-primary-light);
+  filter: brightness(1.2);
+}
+
+.links-widget__link:active {
+  transform: scale(1.1);
+}
+
+.links-widget__link svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 快捷链接响应式
+   Quick Links Responsive */
+@media (max-width: 768px) {
+  .links-widget {
+    bottom: var(--spacing-md);
+    width: calc(100% - var(--spacing-lg) * 2);
+  }
+
+  .links-widget__container {
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .links-widget__link {
+    width: 2rem;
+    height: 2rem;
+  }
+}

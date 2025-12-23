@@ -1,6 +1,6 @@
 import './styles/index.css';
 import { IComponent, EventBus } from './core';
-import { WeatherManager, ClockManager, SearchManager } from './modules';
+import { WeatherManager, ClockManager, SearchManager, LinksManager } from './modules';
 
 /**
  * AppManager - 应用程序管理器，负责初始化和协调所有组件
@@ -89,9 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Register search component (center)
     app.RegisterComponent(new SearchManager());
 
-    // TODO: 后续添加更多组件
-    // TODO: Add more components later
-    // app.RegisterComponent(new LinksComponent());
+    // 注册快捷链接组件（底部）
+    // Register quick links component (bottom)
+    app.RegisterComponent(new LinksManager());
 
     app.Init().catch((error) => {
         console.error('[AppManager] Initialization failed:', error);
