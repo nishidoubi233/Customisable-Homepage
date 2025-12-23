@@ -3,8 +3,8 @@
    Design System - CSS Variables & Base Styles
    ============================================ */
 
-/* 设计令牌 - 颜色
-   Design Tokens - Colors */
+/* 设计令牌 - 颜色 (浅色毛玻璃主题)
+   Design Tokens - Colors (Light Glassmorphism Theme) */
 :root {
   /* 主色调
      Primary colors */
@@ -12,23 +12,28 @@
   --color-primary-light: hsl(220, 90%, 66%);
   --color-primary-dark: hsl(220, 90%, 46%);
 
-  /* 背景色
-     Background colors */
-  --color-bg-base: hsl(225, 25%, 8%);
-  --color-bg-surface: hsl(225, 20%, 12%);
-  --color-bg-elevated: hsl(225, 18%, 16%);
-  --color-bg-glass: hsla(225, 20%, 15%, 0.7);
+  /* 背景渐变色
+     Background gradient colors */
+  --color-gradient-pink: #F4D0D0;
+  --color-gradient-peach: #F8E0D0;
+  --color-gradient-grey: #E0E0E0;
 
-  /* 文字色
-     Text colors */
-  --color-text-primary: hsl(0, 0%, 95%);
-  --color-text-secondary: hsl(0, 0%, 70%);
-  --color-text-muted: hsl(0, 0%, 50%);
+  /* 文字色 (深色对比)
+     Text colors (Dark contrast) */
+  --color-text-primary: #333333;
+  --color-text-secondary: #666666;
+  --color-text-muted: rgba(0, 0, 0, 0.4);
 
-  /* 边框色
-     Border colors */
-  --color-border: hsla(0, 0%, 100%, 0.1);
-  --color-border-hover: hsla(0, 0%, 100%, 0.2);
+  /* 毛玻璃设计令牌
+     Glassmorphism Design Tokens */
+  --glass-bg: rgba(255, 255, 255, 0.2);
+  --glass-bg-hover: rgba(255, 255, 255, 0.35);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-border-hover: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  --glass-shadow-hover: 0 12px 40px 0 rgba(31, 38, 135, 0.12);
+  --glass-blur: 16px;
+  --glass-radius: 24px;
 
   /* 设计令牌 - 间距
      Design Tokens - Spacing */
@@ -44,13 +49,14 @@
   --radius-sm: 0.375rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
+  --radius-xl: 24px;
   --radius-full: 9999px;
 
   /* 设计令牌 - 阴影
      Design Tokens - Shadows */
-  --shadow-sm: 0 1px 2px hsla(0, 0%, 0%, 0.3);
-  --shadow-md: 0 4px 12px hsla(0, 0%, 0%, 0.4);
-  --shadow-lg: 0 8px 24px hsla(0, 0%, 0%, 0.5);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
 
   /* 设计令牌 - 过渡
      Design Tokens - Transitions */
@@ -60,8 +66,7 @@
 
   /* 设计令牌 - 字体
      Design Tokens - Typography */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    sans-serif;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
@@ -69,7 +74,7 @@
   --font-size-xl: 1.5rem;
   --font-size-2xl: 2rem;
   --font-size-3xl: 3rem;
-  --font-size-clock: clamp(4rem, 12vw, 8rem);
+  --font-size-clock: clamp(5rem, 14vw, 8rem);
 }
 
 /* 重置样式
@@ -95,8 +100,20 @@ body {
   font-size: var(--font-size-base);
   line-height: 1.6;
   color: var(--color-text-primary);
-  background: var(--color-bg-base);
   min-height: 100vh;
+
+  /* 温暖的网格渐变背景
+     Warm mesh gradient background */
+  background:
+    /* SVG 噪点纹理覆盖层 (减少色带) */
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"),
+    /* 多层径向渐变创建网格效果 */
+    radial-gradient(ellipse at 20% 30%, var(--color-gradient-pink) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, var(--color-gradient-peach) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 80%, var(--color-gradient-grey) 0%, transparent 55%),
+    radial-gradient(ellipse at 30% 70%, var(--color-gradient-peach) 0%, transparent 45%),
+    linear-gradient(135deg, var(--color-gradient-pink), var(--color-gradient-peach), var(--color-gradient-grey));
+  background-attachment: fixed;
 }
 
 /* 应用容器
@@ -111,23 +128,45 @@ body {
   gap: var(--spacing-xl);
 }
 
+/* 毛玻璃工具类
+   Glassmorphism Utility Class */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow);
+  transition:
+    background var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
+}
+
+.glass-panel:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-hover);
+}
+
 /* 玻璃拟态卡片
    Glassmorphism Card */
 .card {
-  background: var(--color-bg-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
   padding: var(--spacing-lg);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--glass-shadow);
   transition: border-color var(--transition-base),
     box-shadow var(--transition-base);
 }
 
 .card:hover {
-  border-color: var(--color-border-hover);
-  box-shadow: var(--shadow-lg);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-hover);
 }
 
 /* 按钮基础样式
@@ -228,21 +267,25 @@ body {
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--color-bg-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  box-shadow: var(--shadow-sm);
+  /* 毛玻璃效果 */
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow);
   z-index: 100;
   animation: fadeIn var(--transition-base) ease-out forwards;
-  transition: border-color var(--transition-fast),
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
 
 .weather-widget:hover {
-  border-color: var(--color-border-hover);
-  box-shadow: var(--shadow-md);
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-hover);
 }
 
 .weather-widget__icon {
@@ -294,17 +337,19 @@ body {
 
 .clock-widget__time {
   font-size: var(--font-size-clock);
-  font-weight: 300;
+  font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--color-text-primary);
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 2px 20px hsla(0, 0%, 0%, 0.3);
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .clock-widget__date {
   font-size: var(--font-size-lg);
-  font-weight: 400;
+  font-weight: 500;
   color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 /* 时钟组件响应式
@@ -334,36 +379,42 @@ body {
   width: 100%;
   max-width: 600px;
   padding: var(--spacing-md) var(--spacing-lg);
-  background: var(--color-bg-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--color-border);
+  /* 毛玻璃效果 */
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-full);
-  box-shadow: var(--shadow-md);
-  transition: border-color var(--transition-base),
-    box-shadow var(--transition-base), transform var(--transition-base);
+  box-shadow: var(--glass-shadow);
+  transition:
+    background var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
   animation: fadeIn var(--transition-base) ease-out forwards;
 }
 
 .search-widget:hover {
-  border-color: var(--color-border-hover);
-  box-shadow: var(--shadow-lg);
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-hover);
 }
 
 .search-widget--focused {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 4px hsla(220, 90%, 56%, 0.2), var(--shadow-lg);
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-hover);
   transform: scale(1.01);
 }
 
 .search-widget__icon {
   font-size: var(--font-size-xl);
-  opacity: 0.6;
-  transition: opacity var(--transition-fast);
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast);
 }
 
 .search-widget--focused .search-widget__icon {
-  opacity: 1;
+  color: var(--color-text-primary);
 }
 
 .search-widget__input {
@@ -411,12 +462,13 @@ body {
   align-items: center;
   gap: var(--spacing-lg);
   padding: var(--spacing-md) var(--spacing-xl);
-  background: var(--color-bg-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--color-border);
+  /* 毛玻璃效果 */
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-full);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--glass-shadow);
 }
 
 .links-widget__link {
@@ -425,21 +477,24 @@ body {
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
-  color: var(--link-color, var(--color-text-primary));
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
   text-decoration: none;
-  transition: transform var(--transition-fast),
-    color var(--transition-fast),
-    filter var(--transition-fast);
+  background: transparent;
+  transition:
+    transform var(--transition-fast),
+    background var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .links-widget__link:hover {
-  transform: scale(1.2);
-  color: var(--color-primary-light);
-  filter: brightness(1.2);
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .links-widget__link:active {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .links-widget__link svg {
